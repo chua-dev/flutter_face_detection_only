@@ -69,9 +69,77 @@ class _FaceDetectorState extends State<FaceDetector> {
       ),
       body: isLoading
         ? Center(
-        child: Container(),
-      )
+        child: Container(
+        width: MediaQuery.of(context).size.width / 1.1,
+        height: MediaQuery.of(context).size.height / 2,
+        decoration: BoxDecoration(
+        color: Colors.grey,
+        borderRadius: BorderRadius.circular(20)),
+        child: Center(child: CircularProgressIndicator())),
     )
+    : (_imageFile == null)
+    ? Center(
+      child: Container(
+      width: MediaQuery.of(context).size.width / 1.1,
+      height: MediaQuery.of(context).size.height / 2,
+      decoration: BoxDecoration(
+        color: Colors.grey,
+        borderRadius: BorderRadius.circular(20)),
+        child: Center(child: Text("No Image Selected"))),
+      )
+      : Center(
+          child: Container(
+          margin: EdgeInsets.only(left: 10, right: 10),
+          child: FittedBox(
+          child: SizedBox(
+          width: _image?.width.toDouble(),
+          height: _image?.height.toDouble(),
+          child: CustomPaint(
+          painter: FacePainter(_image, _faces),
+          ),
+          ),
+          ),
+          ),
+          ),
+          floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FloatingActionButton(
+          onPressed: ()
+          {
+            setState(() {
+              _imageFile = null;
+            });
+          },
+          child: Icon(Icons.refresh),
+          ),
+          ),
+          Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FloatingActionButton(
+          onPressed: () {
+          getImage(true);
+          },
+          child: Icon(Icons.camera_alt),
+          ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FloatingActionButton(
+              onPressed: () {
+                getImage(false);
+              },
+              child: Icon(Icons.image),
+          ),
+    )
+    ],
+    ),
+    );
+
+    }
+
   }
 
 
