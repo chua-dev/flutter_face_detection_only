@@ -12,7 +12,7 @@ class FaceDetector extends StatefulWidget {
 }
 
 class _FaceDetectorState extends State<FaceDetector> {
-  late File _imageFile;
+  File? _imageFile;
   List<Face>? _faces;
   bool isLoading = false;
   ui.Image? _image;
@@ -34,12 +34,12 @@ class _FaceDetectorState extends State<FaceDetector> {
       isLoading = true;
     });
 
-    detectFaces(_imageFile);
+    detectFaces(_imageFile!);
   }
 
   detectFaces(File imageFile) async {
     final image = FirebaseVisionImage.fromFile(imageFile);
-    final faceDetector = FirebaseVisionImage.fromFile(imageFile);
+    final faceDetector = FirebaseVision.instance.faceDetector();
     List<Face> faces = await faceDetector.processImage(image);
 
     if (mounted) {
@@ -95,7 +95,7 @@ class _FaceDetectorState extends State<FaceDetector> {
           width: _image?.width.toDouble(),
           height: _image?.height.toDouble(),
           child: CustomPaint(
-          painter: FacePainter(_image, _faces),
+          painter: FacePainter(_image!, _faces!),
           ),
           ),
           ),
@@ -141,16 +141,3 @@ class _FaceDetectorState extends State<FaceDetector> {
     }
 
   }
-
-
-
-
-
-
-
-
-
-
-
-
-}
